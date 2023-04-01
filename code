@@ -1,0 +1,139 @@
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QHBoxLayout, QVBoxLayout, QPushButton
+from PyQt5.QtCore import *
+#from instruction import *
+
+#инициализация глобальных переменных
+name = ''
+age = 7
+p1, p2, p3 = 0, 0, 0
+
+win_x, win_y = 200, 100
+win_w, win_h = 1000, 600
+
+txt_title = 'Тест Руфье'
+
+#1 экран
+class InstrScr(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        self.initUi()
+        self.connects()
+        self.set_appear()
+        self.show()
+
+    def initUi(self):
+        #создание кнопок
+        self.lbl_instr = QLabel('инфо')
+        self.lbl_name = QLabel('введите имя:')
+        self.inp_name = QLineEdit()
+        self.lbl_age = QLabel('введите возраст:')
+        self.inp_age = QLineEdit('7')
+        self.btn = QPushButton('начать')
+
+
+
+        #layout
+        self.v_line = QVBoxLayout()
+        self.h_line_name = QHBoxLayout()
+        self.h_line_age = QHBoxLayout()
+        #размещение виджетов по линиям
+        self.h_line_name.addWidget(self.lbl_name)
+        self.h_line_name.addWidget(self.inp_name)
+
+        self.h_line_age.addWidget(self.lbl_age)
+        self.h_line_age.addWidget(self.inp_age)        
+
+        self.v_line.addWidget(self.lbl_instr)
+        self.v_line.addLayout(self.h_line_name)
+        self.v_line.addLayout(self.h_line_age)
+        self.v_line.addWidget(self.btn, alignment = Qt.AlignCenter)
+
+        self.setLayout(self.v_line)
+
+
+
+
+
+
+    def connects(self):
+        self.btn.clicked.connect(self.next_click)
+
+
+    def next_click(self):
+        self.ps = BefPulsScr()
+        self.hide()
+    
+    def set_appear(self):
+        self.setWindowTitle(txt_title)
+        self.resize(win_w, win_h)
+        self.move(win_x, win_y)
+
+
+#2 экран
+class BefPulsScr(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        #self.initUi()
+        #self.connects()
+        self.set_appear()
+        self.show()
+    
+    def set_appear(self):
+        self.setWindowTitle(txt_title)
+        self.resize(win_w, win_h)
+        self.move(win_x, win_y)
+
+    
+#3 экран
+class CheckSitsScr(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        #self.initUi()
+        #self.connects()
+        self.set_appear()
+        self.show()
+    
+    def set_appear(self):
+        self.setWindowTitle(txt_title)
+        self.resize(win_w, win_h)
+        self.move(win_x, win_y)
+
+
+#4 экран
+class AftPulsScr(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        #self.initUi()
+        #self.connects()
+        self.set_appear()
+        self.show()
+    
+    def set_appear(self):
+        self.setWindowTitle(txt_title)
+        self.resize(win_w, win_h)
+        self.move(win_x, win_y)
+
+
+#5 экран
+class ResScr(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        #self.initUi()
+        self.set_appear()
+        self.show()
+    
+    def set_appear(self):
+        self.setWindowTitle(txt_title)
+        self.resize(win_w, win_h)
+        self.move(win_x, win_y)
+
+
+
+app = QApplication([])
+main_win = InstrScr()
+app.exec_()
