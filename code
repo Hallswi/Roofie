@@ -2,6 +2,18 @@ from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QHBoxLayou
 from PyQt5.QtCore import *
 from instr import *
 
+class Person():
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+class Experiment():
+    def __init__(self, person, test1, test2, test3):
+        self.person = person
+        self.test1 = test1
+        self.test2 = test2
+        self.test3 = test3
+
 #инициализация глобальных переменных
 name = ''
 age = 7
@@ -11,6 +23,15 @@ win_x, win_y = 200, 100
 win_w, win_h = 1000, 600
 
 txt_title = 'Тест Руфье'
+
+
+def error_int(intg):
+    try:
+        return int(intg)
+    except:
+        return False
+
+
 
 #1 экран
 class InstrScr(QWidget):
@@ -31,8 +52,6 @@ class InstrScr(QWidget):
         self.inp_age = QLineEdit('7')
         self.btn = QPushButton('начать')
 
-
-
         #layout
         self.v_line = QVBoxLayout()
         self.h_line_name = QHBoxLayout()
@@ -51,16 +70,15 @@ class InstrScr(QWidget):
 
         self.setLayout(self.v_line)
 
-
-
-
-
-
     def connects(self):
         self.btn.clicked.connect(self.next_click)
 
 
     def next_click(self):
+        global name, age
+        name = self.inp_name.text()
+        age = error_int(self.inp_age.text())
+
         self.ps = BefPulsScr()
         self.hide()
     
@@ -104,11 +122,11 @@ class BefPulsScr(QWidget):
         self.btn_next.clicked.connect(self.next_click)
     
     def next_click(self):
+        global p1
+        p1 = error_int(self.line_p1.text())
         self.tw = CheckSitsScr()
         self.hide()
   
-
-    
 #3 экран
 class CheckSitsScr(QWidget):
     def __init__(self):
@@ -166,8 +184,6 @@ class AftPulsScr(QWidget):
         self.inp_p3 = QLineEdit('0')
         self.btn = QPushButton('Завершить')
 
-
-
         #layout
         self.v_line = QVBoxLayout()
         self.h_line_p1 = QHBoxLayout()
@@ -190,12 +206,13 @@ class AftPulsScr(QWidget):
         self.btn.clicked.connect(self.next_click)
     
     def next_click(self):
+        global p2, p3
+        p2 = error_int(self.inp_p2.text())
+        p3 = error_int(self.inp_p3.text())
         self.tw = ResScr()
         self.hide()
 
-
-
-#5 экран
+#5 экран 
 class ResScr(QWidget):
     def __init__(self):
         super().__init__()
@@ -204,32 +221,83 @@ class ResScr(QWidget):
         self.set_appear()
         self.show()
     
+    def result(self):
+        if age < 7:
+            self.index = 0
+            return 'нет данных для такого возраста ይትን ልፍይይስ[ ልክዝ ንፍርጁጅ ድጅፕህፍችንፍ'
+        self.index = (4 * (int(p1) + int(p2) + int(p3)) - 200)/10
+        if age == 7 or age == 8:
+            if self.index >= 21:
+                return txt_res1
+            elif self.index < 21 and self.index >= 17:
+                return txt_res2    
+            elif self.index < 17 and self.index >= 12:
+                return txt_res3        
+            elif self.index < 12 and self.index >= 6.5:
+                return txt_res4      
+            return txt_res5 
+    
+        if age == 9 or age == 10:
+            if self.index >= 19.5:
+                return txt_res1
+            elif self.index < 19.5 and self.index >= 15.5:
+                return txt_res2    
+            elif self.index < 15.5 and self.index >= 10.5:
+                return txt_res3        
+            elif self.index < 10.5 and self.index >= 5:
+                return txt_res4      
+            return txt_res5     
+    
+        if age == 11 or age == 12:
+            if self.index >= 18:
+                return txt_res1
+            elif self.index < 18 and self.index >= 14:
+                return txt_res2    
+            elif self.index < 14 and self.index >= 9:
+                return txt_res3        
+            elif self.index < 9 and self.index >= 3.5:
+                return txt_res4      
+            return txt_res5     
+    
+        if age == 13 or age == 14:
+            if self.index >= 16.5:
+                return txt_res1
+            elif self.index < 16.5 and self.index >= 12.5:
+                return txt_res2    
+            elif self.index < 12.5 and self.index >= 7.5:
+                return txt_res3        
+            elif self.index < 7.5 and self.index >= 2:
+                return txt_res4      
+            return txt_res5 
+
+
+        if age >= 15:
+            if self.index >= 15:
+                return txt_res1
+            elif self.index < 15 and self.index >= 11:
+                return txt_res2    
+            elif self.index < 11 and self.index >= 6:
+                return txt_res3        
+            elif self.index < 6 and self.index >= 0.5:
+                return txt_res4      
+            return txt_res5 
+
     def set_appear(self):
         self.setWindowTitle(txt_title)
         self.resize(win_w, win_h)
         self.move(win_x, win_y)
 
 
-
-
-
     def initUi(self):
         #создание кнопок
-        self.w_text = QLabel(txt_workheart) #+ self.results())
-        self.lbl_p2 = QLabel(txt_index) #+ str(self.index)
+        self.w_text = QLabel(name + txt_workheart + self.result())
+        self.lbl_p2 = QLabel(txt_index + str(self.index))
 
 
         self.lay_line = QVBoxLayout()
         self.lay_line.addWidget(self.w_text, alignment = Qt.AlignCenter)
         self.lay_line.addWidget(self.lbl_p2, alignment = Qt.AlignCenter)
         self.setLayout(self.lay_line)
-
-       
-
-
-
-    
-
 
 app = QApplication([])
 main_win = InstrScr()
